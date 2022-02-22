@@ -60,7 +60,8 @@ public class PaymentService {
             return new ResponseMessage("Impossible to send money to yourself from yourself", 401);
         if(sender.getStatus() != Status.ACTIVE || receiver.getStatus() != Status.ACTIVE)
             return new ResponseMessage("You or receiver is blocked", 402);
-
+        if(sender.getAmount() - amount < 0)
+            return new ResponseMessage("Not enough money in your wallet", 405);
         Operations operation = new Operations();
         operation.setPaymentType(PaymentType.BANK_INTERNET);
         operation.setDate(now);
